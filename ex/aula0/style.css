@@ -1,0 +1,303 @@
+:root {
+    /* Cores */
+    --primary-blue: #005a9c;
+    --secondary-blue: #008eb0;
+    --accent-orange: #f26f21;
+    --accent-yellow: #ffc72c;
+    --bg-color: #f8f9fa;
+    --text-main: #333333;
+    --text-light: #666666;
+    --border-color: #dee2e6;
+    --white: #ffffff;
+    
+    /* Espaçamentos e Fontes Base */
+    --font-base: 1rem; /* Equivalente a 16px no navegador padrão */
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 2rem;
+    --border-rad: 0.5rem;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-size: var(--font-base);
+}
+
+/* Header */
+.top-header {
+    background-color: var(--white);
+    padding-top: 2vh;
+    box-shadow: 0 0.2rem 0.5rem rgba(0,0,0,0.05);
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: row;
+    padding: 0 4vw 2vh;
+    align-items: center;
+}
+
+.logo-container h1 {
+    color: var(--secondary-blue);
+    font-size: 1.5rem;
+    font-weight: 500;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-left: 2vw;
+}
+
+#logo-usp {
+    width: auto;
+    height: 5vh;
+}
+
+.logo-container p {
+    color: var(--secondary-blue);
+    font-size: 0.875rem;
+    margin-left: 2vw;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.color-bars {
+    display: flex;
+    height: 1vh;
+    min-height: 0.5rem;
+    width: 100%;
+}
+
+.bar { flex: 1; }
+.bar.orange { background-color: var(--accent-orange); }
+.bar.yellow { background-color: var(--accent-yellow); }
+.bar.teal { background-color: var(--secondary-blue); }
+.bar.blue { background-color: var(--primary-blue); }
+
+/* Layout Base */
+.container {
+    display: flex;
+    flex: 1;
+    max-width: 90vw; /* Usando largura relativa ao viewport */
+    width: 100%;
+    margin: 4vh auto;
+    padding: 0 2vw;
+    gap: 3vw;
+}
+
+/* Menu Lateral */
+.sidebar {
+    width: 25%; /* Relativo ao container pai */
+    min-width: 16rem;
+    flex-shrink: 0;
+}
+
+.menu-section {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-rad);
+    overflow: hidden;
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 0.2rem 0.4rem rgba(0,0,0,0.02);
+}
+
+.menu-section h2 {
+    background-color: #e9ecef;
+    color: #495057;
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+}
+
+.menu-section ul { list-style: none; }
+.menu-section li { border-top: 1px solid var(--border-color); }
+
+.menu-section a {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.menu-section a::after {
+    content: "⋮";
+    color: #ccc;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.menu-section a:hover, .menu-section a.active {
+    background-color: #f1f5f9;
+    color: var(--secondary-blue);
+    font-weight: 600;
+    padding-left: 1.25rem;
+}
+
+.menu-section a:hover::after, .menu-section a.active::after {
+    opacity: 1;
+}
+
+/* Área de Login */
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center; /* Centraliza o card de login na tela */
+    align-items: flex-start;
+}
+
+.login-card {
+    background: var(--white);
+    padding: 2.5rem 3rem;
+    border-radius: var(--border-rad);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.03);
+    width: 100%;
+    max-width: 40rem;
+}
+
+.login-card h2 {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-main);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.input-group label {
+    width: 25%;
+    font-weight: 500;
+    color: var(--text-main);
+    text-align: right;
+    padding-right: 1rem;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: #fdfdfd;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--secondary-blue);
+    box-shadow: 0 0 0 0.2rem rgba(0, 142, 176, 0.15);
+    background-color: var(--white);
+}
+
+.action-group {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 25%; /* Alinha com os inputs (mesma largura da label) */
+    margin-top: var(--spacing-lg);
+}
+
+.btn-login {
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    color: var(--text-main);
+    padding: 0.75rem 2rem;
+    font-size: 0.95rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-login:hover {
+    background-color: #dde2e6;
+    border-color: #adb5bd;
+}
+
+/* Rodapé */
+footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 3vh 2vw;
+    color: var(--text-light);
+    font-size: 0.8rem;
+    background-color: var(--white);
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-links { margin-bottom: 0.5rem; }
+.footer-links a { color: var(--secondary-blue); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* =========================================
+   Responsividade para Celulares e Telas Menores 
+   ========================================= */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        margin: 2vh auto;
+        padding: 0 4vw;
+    }
+    
+    .sidebar { 
+        display: none; 
+    }
+    
+    .login-card {
+        padding: 1.5rem;
+    }
+
+    .input-group {
+        flex-direction: column;
+        align-items: stretch; /* ESTICA OS INPUTS PARA OCUPAREM 100% DO CONTAINER */
+    }
+    
+    .input-group label {
+        text-align: left;
+        margin-bottom: var(--spacing-sm);
+        width: 100%;
+        padding-right: 0;
+    }
+
+    .input-group input {
+        width: 100%; /* Garante que o input preencha o espaço */
+    }
+    
+    .action-group { 
+        padding-left: 0; 
+    }
+    
+    .btn-login { 
+        width: 100%; 
+        padding: 1rem; 
+    }
+    
+    .logo-container h1 { 
+        font-size: 1.2rem; 
+    }
+    
+    .logo-container p { 
+        margin-top: 0.2rem;
+    }
+}
