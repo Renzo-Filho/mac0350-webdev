@@ -1,39 +1,78 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>JupiterWEB 2</title>
+    <title>JupiterWEB</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <img class="logo" src="img/usp-logo.png">
-        <!-- <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#sobre">Sobre</a></li>
-                <li><a href="#contato">Contato</a></li>
-            </ul>
-        </nav> -->
+    <header class="top-header">
+        <div class="logo-container">
+            <img id="logo-usp" src="img/usp-logo.png" alt="">
+            <div class="logo-text">
+                <h1>Universidade de São Paulo</h1>
+                <p>Brasil</p>
+            </div>
+        </div>
+        <div class="color-bars">
+            <div class="bar orange"></div>
+            <div class="bar yellow"></div>
+            <div class="bar teal"></div>
+            <div class="bar blue"></div>
+        </div>
     </header>
 
     <div class="container">
-        <section id="home" class="hero">
-            <h2>Bem-vindo ao Futuro</h2>
-            <p>Este é um template HTML simples, porém poderoso, para começar seu próximo grande projeto.</p>
-            <a href="#" class="btn">Saiba Mais</a>
-        </section>
+        <aside class="sidebar">
+            <section class="menu-section">
+                <h2>Público</h2>
+                <ul>
+                    <li><a href="#">Calendário Escolar</a></li>
+                    <li><a href="#">Cursos de ingresso</a></li>
+                    <li><a href="#">Disciplina</a></li>
+                    <li><a href="#">Editais</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </section>
+            
+            <section class="menu-section">
+                <h2>Acesso Restrito</h2>
+                <ul>
+                    <li><a href="#" class="active">Entrar</a></li>
+                    <li><a href="#">Esqueci a Senha</a></li>
+                    <li><a href="#">Primeiro Acesso</a></li>
+                </ul>
+            </section>
+        </aside>
 
-        <section id="sobre" style="margin-top: 2rem;">
-            <h2>Sobre o Projeto</h2>
-            <p>Aqui você pode descrever seus serviços, sua história ou o que sua aplicação faz. O design é focado na legibilidade.</p>
-        </section>
+        <main class="main-content">
+            <div class="login-card">
+                <h2>Login</h2>
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label for="usuario">Usuário:</label>
+                        <input type="text" id="usuario" name="usuario" value="" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="senha">Senha:</label>
+                        <input type="password" id="senha" name="senha" value="" required>
+                    </div>
+                    <div class="action-group">
+                        <button type="submit" class="btn-login">Entrar</button>
+                    </div>
+                </form>
+            </div>
+        </main>
     </div>
 
     <footer>
-        <p>&copy; 2026 Meu Projeto - Todos os direitos reservados.</p>
+        <div class="footer-links">
+            <a href="#">Créditos</a> | <a href="#">Fale conosco</a>
+        </div>
+        <p>&copy; 1999 - 2026 - Superintendência de Tecnologia da Informação/USP</p>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
