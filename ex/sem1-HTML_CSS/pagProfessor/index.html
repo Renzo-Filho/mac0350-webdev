@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prof. Dr. Roberto M. Cesar Jr. | IME-USP</title>
+    <link rel='stylesheet' type='text/css' media='screen' href='styles.css'>
+    <script src='scripts.js' defer></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+</head>
+<body>
+
+    <!-- Header Mobile (Apenas telas pequenas) -->
+    <header class="mobile-header">
+        <h1>Roberto M. Cesar Jr.</h1>
+        <div class="header-actions">
+            <button id="mobileThemeToggle" class="btn-icon" aria-label="Alternar Tema">
+                <i class="fas fa-moon dark-icon"></i>
+            </button>
+            <button id="menuBtn" class="btn-icon" aria-label="Abrir Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Sidebar Lateral Fixa -->
+    <aside id="sidebar" class="sidebar">
+        
+        <button id="closeMenuBtn" class="sidebar-close-btn" aria-label="Fechar Menu">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <div class="profile-container">
+            <img src="img/image003.jpg" alt="Prof. Dr. Roberto M. Cesar Jr." class="profile-img">
+            <h1 class="profile-title">Roberto M. Cesar Jr.</h1>
+            <p class="profile-role">Full Professor</p>
+            <p class="profile-dept">Computer Science, IME-USP</p>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="#about" class="nav-link active">Biography</a>
+            <a href="#projects" class="nav-link">Research & Opportunities</a>
+            <a href="#publications" class="nav-link">Publications & News</a>
+            <a href="#students" class="nav-link">Students</a>
+        </nav>
+
+        <div class="social-links">
+            <a href="https://orcid.org/0000-0003-2701-4288" target="_blank" title="ORCID"><i class="ai ai-orcid"></i></a>
+            <a href="http://scholar.google.com/citations?user=yGsck-AAAAAJ" target="_blank" title="Google Scholar"><i class="ai ai-google-scholar"></i></a>
+            <a href="http://lattes.cnpq.br/2240951178648368" target="_blank" title="Currículo Lattes"><i class="ai ai-lattes"></i></a>
+            <a href="http://escience.ime.usp.br/" target="_blank" title="eScience Research Group"><i class="fas fa-network-wired"></i></a>
+            <a href="http://www.bv.fapesp.br/pt/pesquisador/397/roberto-marcondes-cesar-junior/" target="_blank" title="FAPESP Profile"><i class="fas fa-file-contract"></i></a>
+        </div>
+
+        <div class="theme-toggle-desktop">
+            <button id="desktopThemeToggle" class="btn-theme">
+                <i class="fas fa-moon dark-icon"></i> <span class="theme-text">Modo Escuro</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Overlay para fechar menu no mobile -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        
+        <!-- About Section -->
+        <section id="about">
+            <h2 class="section-title">Biography</h2>
+            <div class="text-secondary">
+                <p>
+                    Roberto M. Cesar Jr. holds a BSc in Computer Science from São Paulo State University (IBILCE – UNESP, 1992), an MSc in Electrical Engineering from the University of Campinas (UNICAMP, 1993), and a PhD in Physics from the University of São Paulo (USP, 1997). He is currently a Full Professor in the Department of Computer Science at the Institute of Mathematics and Statistics (IME) – USP, and an Associate Researcher at InovaUSP.
+                </p>
+                <p>
+                    He served as a member of the FAPESP Computer Science Area Panel (2006–2012) and as a reviewer for the CAPES Triennial Evaluation Committee for Computer Science (2007–2009, 2010–2012). He was Director of the USP eScience Research Center and Head of the Department of Computer Science at IME-USP. From 2010 to 2012, he was also a researcher at CTBE – CNPEM. From 2006 to 2023, he acted as Scientific Advisor to the Scientific Director of FAPESP and was responsible for the CEPID and Engineering Research Center programs. He is a member of the São Paulo State Academy of Sciences (ACIESP) and has delivered invited lectures at several conferences, including SIBGRAPI 2011, SHAPES 2.0 (2012), and eSon – IEEE eScience 2013. He is co-creator of the ScriptLattes tool and serves as Associate Editor for <em>Pattern Recognition</em> and the <em>Journal of the Brazilian Computer Society</em>.
+                </p>
+                <p>
+                    His research interests span Mathematical and Engineering aspects of Computer Science, with emphasis on Computer Vision, Pattern Recognition, Image Processing, Bioinformatics, and eScience.
+                </p>
+                <div style="margin-top: 1.5rem;">
+                    <a href="https://www.ime.usp.br/~cesar/CV_RobertoCesar.pdf" target="_blank" class="btn-primary">
+                        <i class="fas fa-file-pdf"></i> Download a summarized CV (PDF)
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects / Research & Opportunities Section -->
+        <section id="projects" class="hidden">
+            <h2 class="section-title">Research & Opportunities</h2>
+            <div class="grid-2">
+                <!-- Research Areas -->
+                <div class="card">
+                    <h3 style="color: var(--color-accent);"><i class="fas fa-microscope"></i> Research Areas</h3>
+                    <ul class="list-disc">
+                        <li>Computer Vision</li>
+                        <li>Machine Learning</li>
+                        <li>Artificial Intelligence</li>
+                        <li>Data Science</li>
+                    </ul>
+                </div>
+
+                <!-- Opportunities -->
+                <div class="card">
+                    <h3 style="color: var(--color-success);"><i class="fas fa-door-open"></i> Opportunities</h3>
+                    <p class="text-sm">
+                        Open positions for undergraduate, MSc, PhD students and postdoctoral researchers. Competitive fellowships available. International applicants are welcome.
+                    </p>
+                    <a href="mailto:rmcesar@usp.br" style="font-size: 0.875rem; font-weight: 500;">Contact via email <i class="fas fa-arrow-right" style="margin-left: 0.25rem; font-size: 0.75rem;"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Publications & News Section -->
+        <section id="publications" class="hidden">
+            <h2 class="section-title">Publications & News</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Publications -->
+                <div class="card">
+                    <h3 style="color: var(--color-purple);"><i class="fas fa-book"></i> Publications</h3>
+                    <p class="text-secondary text-sm">
+                        His full list of publications and citations is available at: 
+                        <a href="http://scholar.google.com/citations?user=yGsck-AAAAAJ&hl=en" target="_blank" style="font-weight: 500;">Google Scholar <i class="fas fa-external-link-alt" style="font-size: 0.75rem;"></i></a>.
+                    </p>
+                </div>
+
+                <!-- News -->
+                <div class="card">
+                    <h3 style="color: var(--color-warning);"><i class="fas fa-newspaper"></i> News</h3>
+                    <ul>
+                        <li style="display: flex; gap: 0.5rem; align-items: flex-start;">
+                            <i class="fas fa-chevron-right" style="color: var(--color-warning); margin-top: 0.25rem; font-size: 0.75rem;"></i>
+                            <a href="https://www.valor.com.br/cultura/6322823/elizabeth-ii-e-akihito-sao-exemplos-do-aumento-da-longevidade-e-da-melhoria-da-qualidade-fisica" target="_blank" class="text-secondary text-sm">
+                                Valor Econômico article on science and society
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Students Section -->
+        <section id="students" class="hidden">
+            <h2 class="section-title">Past Students and Postdocs</h2>
+            
+            <div class="students-container">
+                <div class="scroll-shadow-top"></div>
+                
+                <ul class="students-list">
+                    <!-- MSc -->
+                    <li class="student-item">
+                        <div class="student-name">Andréa Britto Mattos <span class="student-year">(2011)</span></div>
+                        <div class="student-details"><span class="badge-msc">MSc</span> &bull; currently at IBM</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Charles Iury Oliveira Martins <span class="student-year">(2011)</span></div>
+                        <div class="student-details"><span class="badge-msc">MSc</span> &bull; currently at Metro-SP</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Damian Janusz Matuszewski <span class="student-year">(2014)</span></div>
+                        <div class="student-details"><span class="badge-msc">MSc</span> &bull; currently at University of Uppsala</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Florence A. S. Shibata <span class="student-year">(2018)</span></div>
+                        <div class="student-details"><span class="badge-msc">MSc</span> &bull; currently at Johnson & Johnson</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Giseli de Araujo Ramos <span class="student-year">(2012)</span></div>
+                        <div class="student-details"><span class="badge-msc">MSc</span> &bull; currently at Microsoft</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Iago B. A. do C. Araujo</div>
+                        <div class="student-details"><span class="badge-msc">MSc</span> &bull; currently at FAPESP</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Jishu Ashimine <span class="student-year">(2005)</span></div>
+                        <div class="student-details"><span class="badge-msc">MSc</span> &bull; currently at Serasa Experian</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">João Vitor Baldini Soares <span class="student-year">(2006)</span></div>
+                        <div class="student-details"><span class="badge-msc">MSc</span> &bull; currently at Yahoo</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">José Luiz Pimenta</div>
+                        <div class="student-details"><span class="badge-msc">MSc</span> &bull; currently at Data Machina</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Larissa de O. Penteado</div>
+                        <div class="student-details"><span class="badge-msc">MSc</span> &bull; currently at Data Machina</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Lucas de Carvalho Dias</div>
+                        <div class="student-details"><span class="badge-msc">MSc</span></div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Mateus Riva <span class="student-year">(2018)</span></div>
+                        <div class="student-details"><span class="badge-msc">MSc</span> &bull; currently at Telecom ParisTech</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Rogerio Schmidt Feris <span class="student-year">(2001)</span></div>
+                        <div class="student-details"><span class="badge-msc">MSc</span> &bull; currently at IBM</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Teófilo Emidio de Campos <span class="student-year">(2001)</span></div>
+                        <div class="student-details"><span class="badge-msc">MSc</span> &bull; currently at UnB</div>
+                    </li>
+
+                    <!-- PhD -->
+                    <li class="student-item">
+                        <div class="student-name">Luciano W. X. Cejnog</div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at Banco do Brasil</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Alexandre Noma <span class="student-year">(2010)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at UFABC</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Ana Beatriz Vicentim Graciano <span class="student-year">(2012)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span></div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Celina Maki Takemura <span class="student-year">(2008)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at EMBRAPA</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">David Corrêa Martins Junior <span class="student-year">(2008)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at UFABC</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">David da Silva Pires <span class="student-year">(2012)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at Instituto Butantan</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Evelyn Pérez Cervantes</div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at Oracle</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Éric Keiji Tokuda <span class="student-year">(2019)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at USP</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Estephan Dazzi Wandekoken <span class="student-year">(2015)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at Shelfpix</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Fabricio Martins Lopes <span class="student-year">(2011)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at UTFPR</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Henrique Morimitsu <span class="student-year">(2015)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at Tsinghua University</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Jesús Pascual Mena Chalco <span class="student-year">(2010)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at UFABC</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Jorge de Jesus Gomes Leandro <span class="student-year">(2014)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at Motorola</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Marcelo Hashimoto <span class="student-year">(2012)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at INSPER</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Samuel Martins Barbosa Neto <span class="student-year">(2017)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at EMBRAER</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Sílvia Cristina Dias Pinto <span class="student-year">(2005)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at UERJ</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Kelly Rosa Braghetto <span class="student-year">(2011)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at USP</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Talita Perciano Costa Leite <span class="student-year">(2012)</span></div>
+                        <div class="student-details"><span class="badge-phd">PhD</span> &bull; currently at Lawrence Lab</div>
+                    </li>
+
+                    <!-- Postdocs -->
+                    <li class="student-item">
+                        <div class="student-name">Hugo Neves</div>
+                        <div class="student-details"><span class="badge-post">Postdoc</span> &bull; currently at UFV</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Vinicius F. Pignataro Mazzei Albert</div>
+                        <div class="student-details"><span class="badge-post">Postdoc</span> &bull; currently Lead Data Scientist at Whirlpool</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Yossi Zana <span class="student-year">(2007)</span></div>
+                        <div class="student-details"><span class="badge-post">Postdoc</span> &bull; currently at UFABC</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Evaldo Araújo de Oliveira Filho <span class="student-year">(2011)</span></div>
+                        <div class="student-details"><span class="badge-post">Postdoc</span> &bull; currently at UNIFESP</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Hamed Yazdanpanah <span class="student-year">(2011)</span></div>
+                        <div class="student-details"><span class="badge-post">Postdoc</span> &bull; currently Senior Data Scientist at TrAIve</div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Monica Guimarães Campiteli <span class="student-year">(2011)</span></div>
+                        <div class="student-details"><span class="badge-post">Postdoc</span></div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Ricardo Luiz de Andrade Abrantes <span class="student-year">(2018)</span></div>
+                        <div class="student-details"><span class="badge-post">Postdoc</span></div>
+                    </li>
+                    <li class="student-item">
+                        <div class="student-name">Silvia Cristina Dias Pinto <span class="student-year">(2015)</span></div>
+                        <div class="student-details"><span class="badge-post">Postdoc</span> &bull; currently at UERJ</div>
+                    </li>
+                </ul>
+                
+                <div class="scroll-shadow-bottom"></div>
+            </div>
+        </section>
+
+        <!-- Footer Organizado -->
+        <footer class="main-footer">
+            <div class="footer-info">
+                <p style="font-weight: 600; color: var(--text-primary); font-size: 1rem;">Contact</p>
+                <p><i class="fas fa-map-marker-alt"></i> IME - USP, Rua do Matão 1010, 05508-090 - São Paulo, SP</p>
+                <p><i class="fas fa-phone"></i> +55 11 3091-6135</p>
+                <p><i class="fas fa-envelope"></i> rmcesar@usp.br</p>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; <span id="year"></span> Prof. Dr. Roberto M. Cesar Jr.</p>
+            </div>
+        </footer>
+
+    </main>
+</body>
+</html>
