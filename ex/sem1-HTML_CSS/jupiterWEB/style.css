@@ -161,6 +161,7 @@ body {
     display: flex;
     justify-content: center; /* Centraliza o card de login na tela */
     align-items: flex-start;
+    margin-left: -40vh;
 }
 
 .login-card {
@@ -254,7 +255,7 @@ footer {
 /* =========================================
    Responsividade para Celulares e Telas Menores 
    ========================================= */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .container {
         flex-direction: column;
         align-items: center; /* MUDANÇA: Centraliza o eixo no modo coluna */
@@ -265,6 +266,7 @@ footer {
     .main-content {
         width: 100%; /* Garante que a área de login use todo o espaço disponível */
         justify-content: center; 
+        margin-left: auto;
     }
     
     .sidebar { 
@@ -309,5 +311,22 @@ footer {
     
     .logo-container p { 
         margin-top: 0.2rem;
+    }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+    .main-content {
+        margin-left:auto;
+
+    }
+    .container {
+        margin: 2vh auto;
+    }
+    .login-card {
+        padding: 1.5rem;
+    }
+    #logo-usp {
+        height: 40px; 
     }
 }

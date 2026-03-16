@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ex. Casa</title>
+</head>
+<body>
+    <h1>Exercicio Casa JS</h1>
+    <button onclick="alternarLuz()">Clique aqui</button>
+    <p>A luz está APAGADA</p>
+    <h1 id="dobrar">2</h1>
+    <button onclick="dobrar()">DOBRAR</button>
+</body>
+<script>
+    function alternarLuz() {
+        let p = document.querySelector('p')
+        let txt = p.innerText
+
+        if (txt === "A luz está APAGADA") {
+            p.innerText = "A luz está ACESA"
+        } else {
+            p.innerText = "A luz está APAGADA"
+        }
+    }
+
+    function dobrar() {
+        let h1 = document.getElementById('dobrar')
+        let num = h1.innerText
+        num *= 2
+        h1.innerText = num
+
+        if (num > 100) {
+            alert(`Cuidado, o número ${num} está ficando muito grande!`);
+        }
+
+    }
+</script>
+</html>
