@@ -118,6 +118,7 @@
             <option value="Corinthians">Corinthians</option>
             <option value="Palmeiras">Palmeiras</option>
             <option value="Santos">Santos</option>
+            <option value="Cruzeiro">Cruzeiro</option>
         </select>
         <span id="time-selecionado" class="output-text">Nenhum selecionado</span>
     </div>
@@ -128,21 +129,52 @@
     document.addEventListener('DOMContentLoaded', () => {
         
         // --- Exercício 1 ---
-        // Seu código aqui
+        botao = document.getElementById('btn-listener')
+        botao.addEventListener('click', () => {
+            botao.innerText = "Fui clicado via Listener!"
+        })
         
         
         // --- Exercício 2 ---
-        // Seu código aqui
+        input = document.getElementById('input-item')
+        botaoAdd = document.getElementById('btn-add')
+        lista = document.getElementById('lista-itens')
         
+        botaoAdd.addEventListener('click', () => {
+            li = document.createElement('li')
+            li.innerText = input.value
+            lista.append(li)
+        })
         
         // --- Exercício 3 ---
-        // Dica: Crie a variável do tempo aqui fora, e o setInterval dentro do listener do botão
-        // Seu código aqui
+        var time = 0
+        visor = document.getElementById('visor-cronometro')
+        botaoIniciar = document.getElementById('btn-iniciar')
+
+        let intervalo
+        botaoIniciar.addEventListener('click', () => {
+            if (!intervalo) {
+                    intervalo = setInterval(() => {
+                        time++
+                        visor.innerText = time
+                    }, 1000)
+            }
+        })
         
         
         // --- Exercício 4 ---
-        // Seu código aqui (Lembre-se de checar o localStorage logo que a página carregar!)
-        
+        let timeSpan = document.getElementById('time-selecionado')
+        let select = document.getElementById('select-time')
+
+        if (localStorage.getItem('time')) {
+            timeSpan.innerText = localStorage.getItem('time');
+            select.value = localStorage.getItem('time');
+        } 
+
+        select.addEventListener('change', () => {
+            timeSpan.innerText = select.value
+            localStorage.setItem('time', select.value);       
+        })          
     });
 </script>
 
