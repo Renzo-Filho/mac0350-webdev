@@ -1,0 +1,6 @@
+fastapi==0.110.0 # framework web
+uvicorn[standard]==0.29.0 # servidor que vai o FastAPI
+jinja2==3.1.3 # O motor que vai renderizar o HTML misturado com Python (para o HTMX depois).
+sqlalchemy==2.0.28 # A biblioteca que vai conversar com o banco de dados SQL
+requests==2.31.0 # Para buscar os filmes na API do TMDb.
+python-multipart==0.0.9 # Necessário para o FastAPI entender formulários HTML (quando o usuário digitar o nome de um filme).

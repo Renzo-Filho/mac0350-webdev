@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth</title>
+    <link href="{{ url_for('static', path='auth/static/css/style.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', path='auth/static/js/script.js') }}" defer></script>
+</head>
+<body>
+    <h1>Bem-vindo!</h1>
+
+    {% if login %}
+
+    <h2>Login</h2>
+    <form action="/login" method="post">
+        <label for="login_username">Usuário:</label>
+        <input type="text" id="login_username" name="username" required><br><br>
+        
+        <label for="login_password">Senha:</label>
+        <input type="password" id="login_password" name="password" required><br><br>
+        
+        <button type="submit">Entrar</button>
+    </form>
+
+    {% else %}
+
+    <h2>Criar Nova Conta</h2>
+    <form action="/users" method="post">
+        <label for="reg_username">Usuário:</label>
+        <input type="text" id="reg_username" name="username" required><br><br>
+        
+        <label for="reg_password">Senha:</label>
+        <input type="password" id="reg_password" name="password" required><br><br>
+        
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <a href="/login">Já possui conta? Login</a>
+
+    {% endif %}
+
+    {% if message %}
+        <br>
+        <div style="padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
+            <strong>Mensagem do sistema:</strong> {{ message }}
+        </div>
+    {% endif %}
+
+</body>
+</html>
