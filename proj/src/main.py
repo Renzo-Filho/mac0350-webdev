@@ -1,25 +1,44 @@
 # app/main.py
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Form, HTTPException
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from src.db import criar_banco_e_tabelas
+from contextlib import asynccontextmanager
 
-# Inicializa o aplicativo FastAPI
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Tudo que está antes do 'yield' roda na hora que o servidor LIGA
+    print("Iniciando o servidor e verificando o banco de dados...")
+    criar_banco_e_tabelas()
+    
+    yield # O servidor fica rodando aqui
+    
+    # Tudo que está depois do 'yield' roda quando o servidor DESLIGA (CTRL+C)
+    print("Desligando o servidor do HelloMovie...")
+
 app = FastAPI(
-    title="CineTrack API",
+    title="HelloMovie API",
     description="Backend para gerenciamento de catálogo pessoal de filmes.",
-    version="0.1.0"
+    version="0.1.0",
+    lifespan=lifespan
 )
 
-# Rota principal (Hello World)
-@app.get("/")
-def read_root():
-    return {
-        "status": "sucesso",
-        "mensagem": "Olá, Mundo! O backend do CineTrack está no ar e pronto para receber HTMX!"
-    }
+app.mount("/static", StaticFiles(directory="src/static"), name="static")
+templates = Jinja2Templates(directory="src/templates")
 
-# Rota de teste para ver como o FastAPI devolve dados
-@app.get("/ping")
-def ping():
-    return {"ping": "pong"}
+@app.get("/")
+def helloMovie(request: Request):
+    context = {"request": request}
+    return templates.TemplateResponse("index.html", context)
+
+@app.get("/login")
+def login():
+    pass
+
+@app.post("/login")
+def login2():
+    pass
+
 
 
 """

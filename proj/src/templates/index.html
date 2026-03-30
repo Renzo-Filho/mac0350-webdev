@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelloMovie</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/static/js/scripts.js" defer></script>
+
+</head>
+<body class="bg-dark text-gray-100 font-sans antialiased min-h-screen">
+
+    <header class="bg-surface border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center py-4 gap-4">
+                
+                <div class="flex-shrink-0">
+                    <a href="/" class="text-2xl font-extrabold text-brand tracking-wide hover:text-red-500 transition-colors">
+                        HelloMovie
+                    </a>
+                </div>
+
+                <nav class="flex flex-col md:flex-row items-center w-full md:w-auto gap-4 md:gap-8">
+                    
+                    <div class="relative w-full md:w-auto">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        
+                        <input 
+                            type="search" 
+                            placeholder="Buscar filmes..." 
+                            class="w-full md:w-64 bg-gray-800 border border-gray-700 text-white text-sm rounded-full focus:ring-brand focus:border-brand block pl-10 pr-4 py-2 outline-none transition-all"
+                        >
+                    </div>
+                    
+                    <div class="flex items-center gap-6 w-full md:w-auto justify-center md:justify-end">
+                        <a href="/login" class="text-gray-300 hover:text-white font-medium transition-colors">
+                            Entrar
+                        </a>
+                        <a href="/cadastro" class="bg-brand hover:bg-red-700 text-white font-bold py-2 px-5 rounded shadow-lg shadow-brand/30 transition-transform transform hover:scale-105">
+                            Criar Conta
+                        </a>
+                    </div>
+
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+</body>
+</html>
