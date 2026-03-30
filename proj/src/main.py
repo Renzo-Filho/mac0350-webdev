@@ -3,6 +3,7 @@ from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from src.db import criar_banco_e_tabelas
+from src.services.tmdb import buscar_filmes, buscar_detalhes_filme
 from contextlib import asynccontextmanager
 
 @asynccontextmanager
@@ -30,6 +31,32 @@ templates = Jinja2Templates(directory="src/templates")
 def helloMovie(request: Request):
     context = {"request": request}
     return templates.TemplateResponse("index.html", context)
+
+@app.get("/buscar")
+def buscar(request: Request, query: str = ""):
+    if not query:
+        return templates.TemplateResponse("resultadosBusca.html", {"request": request, "filmes": []})
+    
+    filmes_encontrados = buscar_filmes(query)
+    context = {
+        "request": request,
+        "filmes": filmes_encontrados
+    }
+
+    return templates.TemplateResponse("resultadosBusca.html", context)
+
+@app.get("/filme/{filme_id}")
+def detalhes_filme(request: Request, filme_id: int):
+    filme = buscar_detalhes_filme(filme_id)
+
+    if not filme:
+        raise HTTPException(status_code=404, detail="Filme não encontrado")
+    
+    context = {
+        "request": request,
+        "filme": filme
+    }
+    return templates.TemplateResponse("filmeDetalhes.html", context)
 
 @app.get("/login")
 def login():

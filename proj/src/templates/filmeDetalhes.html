@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ filme.title }} - HelloMovie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { brand: '#e50914', dark: '#121212', surface: '#1a1a1a' } } }
+        }
+    </script>
+</head>
+<body class="bg-dark text-gray-100 font-sans antialiased min-h-screen">
+
+    <header class="bg-surface border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-extrabold text-brand tracking-wide hover:text-red-500">HelloMovie</a>
+            <a href="/" class="text-gray-400 hover:text-white">&larr; Voltar para Busca</a>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col md:flex-row gap-8">
+            
+            <div class="md:w-1/3 lg:w-1/4 flex-shrink-0">
+                {% if filme.poster_path %}
+                    <img src="https://image.tmdb.org/t/p/w500{{ filme.poster_path }}" alt="Pôster" class="w-full rounded-lg shadow-2xl">
+                {% else %}
+                    <div class="w-full aspect-[2/3] bg-gray-800 rounded-lg flex items-center justify-center">Sem Pôster</div>
+                {% endif %}
+                
+                <button class="mt-6 w-full bg-brand hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                    Adicionar à Minha Lista
+                </button>
+            </div>
+
+            <div class="md:w-2/3 lg:w-3/4">
+                <h1 class="text-4xl font-extrabold text-white mb-2">
+                    {{ filme.title }} 
+                    <span class="text-gray-500 font-normal text-3xl">({{ filme.release_date[:4] if filme.release_date else '' }})</span>
+                </h1>
+                
+                <div class="flex items-center gap-4 text-sm text-gray-400 mb-6">
+                    <span class="bg-gray-800 text-brand px-2 py-1 rounded font-bold">⭐ {{ "%.1f"|format(filme.vote_average) }} / 10</span>
+                    <span>{{ filme.runtime }} min</span>
+                    <span>
+                        {% for genre in filme.genres %}
+                            {{ genre.name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+
+                <h3 class="text-xl font-bold text-white mb-2">Sinopse</h3>
+                <p class="text-gray-300 leading-relaxed mb-8">
+                    {{ filme.overview if filme.overview else "Nenhuma sinopse disponível em português." }}
+                </p>
+
+                <h3 class="text-xl font-bold text-white mb-4">Elenco Principal</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    {% for ator in filme.credits.cast[:4] %}
+                        <div class="bg-gray-800 rounded p-3 text-center">
+                            <p class="text-white font-semibold text-sm">{{ ator.name }}</p>
+                            <p class="text-gray-500 text-xs mt-1">{{ ator.character }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>

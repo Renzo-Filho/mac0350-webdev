@@ -1,15 +1,12 @@
-# app/models.py
 from typing import Optional
 from sqlmodel import Field, SQLModel
 from datetime import datetime
 
-# Tabela de Usuários
 class Usuario(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     nome: str
     email: str = Field(unique=True, index=True)
 
-# Tabela de Filmes (Cache do TMDb)
 class Filme(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     tmdb_id: int = Field(unique=True, index=True) # ID oficial do TMDb
@@ -18,7 +15,6 @@ class Filme(SQLModel, table=True):
     poster_url: Optional[str] = None
     data_lancamento: Optional[str] = None
 
-# Tabela Relacional (A Lista do Usuário)
 class ListaUsuario(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     usuario_id: int = Field(foreign_key="usuario.id")
