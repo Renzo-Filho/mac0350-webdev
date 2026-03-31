@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Lista - HelloMovie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { brand: '#e50914', dark: '#121212', surface: '#1a1a1a' } } }
+        }
+    </script>
+</head>
+<body class="bg-dark text-gray-100 font-sans antialiased min-h-screen flex flex-col">
+
+    <header class="bg-surface border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-extrabold text-brand tracking-wide hover:text-red-500 transition-colors">HelloMovie</a>
+            <a href="/" class="text-gray-400 hover:text-white transition-colors">&larr; Voltar para Home</a>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
+        
+        <div class="flex items-center gap-3 mb-8">
+            <svg class="w-8 h-8 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+            <h1 class="text-3xl font-extrabold text-white">Minha Lista</h1>
+        </div>
+
+        {% if filmes %}
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                {% for filme in filmes %}
+                    <a href="/filme/{{ filme.tmdb_id }}" class="group relative bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:ring-2 hover:ring-brand transition-all">
+                        
+                        {% if filme.poster_url %}
+                            <img src="https://image.tmdb.org/t/p/w500{{ filme.poster_url }}" alt="{{ filme.titulo }}" class="w-full aspect-[2/3] object-cover transition-transform duration-300 group-hover:scale-105">
+                        {% else %}
+                            <div class="w-full aspect-[2/3] flex items-center justify-center bg-gray-700 text-gray-400 text-sm">Sem Pôster</div>
+                        {% endif %}
+                        
+                        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent p-4 translate-y-2 group-hover:translate-y-0 transition-transform">
+                            <h3 class="text-white font-bold text-sm truncate">{{ filme.titulo }}</h3>
+                            <p class="text-gray-400 text-xs mt-1">{{ filme.data_lancamento[:4] if filme.data_lancamento else '' }}</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="bg-surface border border-gray-800 rounded-2xl p-12 text-center mt-10">
+                <div class="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-10 h-10 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-2">Sua lista está vazia</h2>
+                <p class="text-gray-400 max-w-md mx-auto mb-8">Parece que você ainda não adicionou nenhum filme à sua coleção pessoal. Explore nosso catálogo e comece a salvar seus favoritos!</p>
+                <a href="/" class="bg-brand hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors inline-block shadow-lg">
+                    Explorar Filmes
+                </a>
+            </div>
+        {% endif %}
+
+    </main>
+</body>
+</html>

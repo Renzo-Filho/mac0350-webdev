@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ filme.title }} - HelloMovie</title>
+    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -30,7 +31,10 @@
                     <div class="w-full aspect-[2/3] bg-gray-800 rounded-lg flex items-center justify-center">Sem Pôster</div>
                 {% endif %}
                 
-                <button class="mt-6 w-full bg-brand hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                <button 
+                    hx-post="/minhaLista/adicionar/{{ filme.id }}" 
+                    hx-swap="outerHTML" 
+                    class="mt-6 w-full bg-brand hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105">
                     Adicionar à Minha Lista
                 </button>
             </div>

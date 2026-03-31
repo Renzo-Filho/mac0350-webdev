@@ -1,11 +1,11 @@
 from fastapi import FastAPI, Request, Form, HTTPException, Response, Cookie
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, HTMLResponse
 from passlib.context import CryptContext
 from typing import Optional
 from sqlmodel import Session, select, or_
-from src.models import Usuario
+from src.models import Usuario, Filme, ListaUsuario
 from src.db import engine, criar_banco_e_tabelas
 from src.services.tmdb import buscar_filmes, buscar_detalhes_filme, buscar_lancamentos, buscar_tendencias
 from contextlib import asynccontextmanager
@@ -159,13 +159,13 @@ def cadastrar(request: Request, nome: str = Form(...), email: str = Form(...), s
 @app.get("/perfil")
 def paginaPerfil(request: Request, usuario_id: Optional[str] = Cookie(default=None)):
     if not usuario_id:
-        return RedirectResponse(url="/", status_code=303)
+        return RedirectResponse(url="/login", status_code=303)
     
     with Session(engine) as session:
         usuario = session.get(Usuario, int(usuario_id))
         
         if not usuario:
-            return RedirectResponse(url="/", status_code=303)
+            return RedirectResponse(url="/login", status_code=303)
             
     context = {
         "request": request,
@@ -173,6 +173,82 @@ def paginaPerfil(request: Request, usuario_id: Optional[str] = Cookie(default=No
     }
     
     return templates.TemplateResponse("perfil.html", context)
+
+@app.get("/minhaLista")
+def paginaMinhaLista(request: Request, usuario_id: Optional[str] = Cookie(default=None)):
+    if not usuario_id:
+        return RedirectResponse(url="/login", status_code=303)
+    
+    with Session(engine) as session:
+        usuario = session.get(Usuario, int(usuario_id))
+        
+        if not usuario:
+            return RedirectResponse(url="/login", status_code=303)
+
+        meus_filmes = session.exec(select(Filme).join(ListaUsuario).where(ListaUsuario.usuario_id == usuario.id)).all()
+        
+    context = {
+        "request": request,
+        "usuario": usuario,
+        "filmes": meus_filmes
+    }
+
+    return templates.TemplateResponse("minhaLista.html", context)
+    
+@app.post("/minhaLista/adicionar/{tmdb_id}")
+def adicionarLista(request: Request, tmdb_id: int, usuario_id: Optional[str] = Cookie(default=None)):
+    if not usuario_id:
+        response = HTMLResponse("")
+        response.headers["HX-Redirect"] = "/login"
+        return response
+        
+    with Session(engine) as session:
+        usuario = session.get(Usuario, int(usuario_id))
+        if not usuario:
+            response = HTMLResponse("")
+            response.headers["HX-Redirect"] = "/login"
+            return response
+            
+        existe_filme_db = session.exec(select(Filme).where(Filme.tmdb_id == tmdb_id)).first()
+        
+        if not existe_filme_db:
+            dados_tmdb = buscar_detalhes_filme(tmdb_id)
+
+            if not dados_tmdb:
+                return HTMLResponse("<span class='text-red-500'>Erro ao buscar filme!</span>")
+            
+            existe_filme_db = Filme(
+                tmdb_id=tmdb_id,
+                titulo=dados_tmdb.get("title", "Sem Título"),
+                sinopse=dados_tmdb.get("overview", ""),
+                poster_url=dados_tmdb.get("poster_path", ""),
+                data_lancamento=dados_tmdb.get("release_date", "")
+            )
+            session.add(existe_filme_db)
+            session.commit()
+            session.refresh(existe_filme_db)
+        
+        filme_esta_na_lista = session.exec(select(ListaUsuario).where(
+            ListaUsuario.usuario_id == usuario.id,
+            ListaUsuario.filme_id == existe_filme_db.id
+        )).first()
+        
+        if filme_esta_na_lista:
+            return HTMLResponse("""
+                <button class="mt-6 w-full bg-gray-700 text-gray-400 font-bold py-3 px-4 rounded-lg cursor-not-allowed border border-gray-600">
+                    Já está na sua Lista
+                </button>
+            """)
+            
+        novo_filme = ListaUsuario(usuario_id=usuario.id, filme_id=existe_filme_db.id)
+        session.add(novo_filme)
+        session.commit()
+        
+        return HTMLResponse("""
+            <button class="mt-6 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-colors border border-green-500">
+                ✓ Adicionado com Sucesso!
+            </button>""")
+
 
 """
 uvicorn main:app --reload
