@@ -1,21 +1,20 @@
-# app/main.py
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from src.db import criar_banco_e_tabelas
-from src.services.tmdb import buscar_filmes, buscar_detalhes_filme
+from src.services.tmdb import buscar_filmes, buscar_detalhes_filme, buscar_lancamentos, buscar_tendencias
 from contextlib import asynccontextmanager
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Tudo que está antes do 'yield' roda na hora que o servidor LIGA
+    # antes do 'yield' roda na hora que o servidor LIGA
     print("Iniciando o servidor e verificando o banco de dados...")
     criar_banco_e_tabelas()
     
-    yield # O servidor fica rodando aqui
+    yield
     
-    # Tudo que está depois do 'yield' roda quando o servidor DESLIGA (CTRL+C)
-    print("Desligando o servidor do HelloMovie...")
+    # depois do 'yield' roda quando o servidor DESLIGA 
+    print("Desligando o servidor...")
 
 app = FastAPI(
     title="HelloMovie API",
@@ -29,7 +28,17 @@ templates = Jinja2Templates(directory="src/templates")
 
 @app.get("/")
 def helloMovie(request: Request):
-    context = {"request": request}
+    tendencias = buscar_tendencias()
+    lancamentos = buscar_lancamentos()
+    
+    # O top5 vai pro Carrossel, o resto pra Sugestões
+    context = {
+        "request": request,
+        "carrossel": tendencias[:5],    
+        "sugestoes": tendencias[5:11],  
+        "lancamentos": lancamentos[:6] 
+    }
+
     return templates.TemplateResponse("index.html", context)
 
 @app.get("/buscar")
@@ -56,6 +65,7 @@ def detalhes_filme(request: Request, filme_id: int):
         "request": request,
         "filme": filme
     }
+
     return templates.TemplateResponse("filmeDetalhes.html", context)
 
 @app.get("/login")
