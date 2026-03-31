@@ -3,6 +3,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 from passlib.context import CryptContext
+from typing import Optional
 from sqlmodel import Session, select, or_
 from src.models import Usuario
 from src.db import engine, criar_banco_e_tabelas
@@ -33,13 +34,18 @@ templates = Jinja2Templates(directory="src/templates")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @app.get("/")
-def helloMovie(request: Request):
+def helloMovie(request: Request, usuario_id: Optional[str] = Cookie(default=None)):
+    usuario = None
+    if usuario_id:
+        with Session(engine) as session:
+            usuario = session.get(Usuario, int(usuario_id))
+
     tendencias = buscar_tendencias()
     lancamentos = buscar_lancamentos()
     
-    # O top5 vai pro Carrossel, o resto pra Sugestões
     context = {
         "request": request,
+        "usuario": usuario, 
         "carrossel": tendencias[:5],    
         "sugestoes": tendencias[5:11],  
         "lancamentos": lancamentos[:6] 
@@ -61,7 +67,7 @@ def buscar(request: Request, query: str = ""):
     return templates.TemplateResponse("resultadosBusca.html", context)
 
 @app.get("/filme/{filme_id}")
-def detalhes_filme(request: Request, filme_id: int):
+def detalhesFilme(request: Request, filme_id: int):
     filme = buscar_detalhes_filme(filme_id)
 
     if not filme:
@@ -101,7 +107,17 @@ def logar(request: Request, nome_ou_email: str = Form(...), senha: str = Form(..
 
             return templates.TemplateResponse("login.html", context)
         
-        return RedirectResponse(url="/home", status_code=303)
+        response = RedirectResponse(url="/", status_code=303)
+        response.set_cookie(key="usuario_id", value=str(usuario.id), max_age=86400)
+
+        return response
+
+@app.get("/logout")
+def logout():
+    response = RedirectResponse(url="/", status_code=303)
+    response.delete_cookie("usuario_id")
+    
+    return response
 
 @app.get("/cadastro")
 def paginaCadastro(request: Request):
@@ -139,6 +155,24 @@ def cadastrar(request: Request, nome: str = Form(...), email: str = Form(...), s
         session.commit()
         
         return RedirectResponse(url="/login", status_code=303)
+
+@app.get("/perfil")
+def paginaPerfil(request: Request, usuario_id: Optional[str] = Cookie(default=None)):
+    if not usuario_id:
+        return RedirectResponse(url="/", status_code=303)
+    
+    with Session(engine) as session:
+        usuario = session.get(Usuario, int(usuario_id))
+        
+        if not usuario:
+            return RedirectResponse(url="/", status_code=303)
+            
+    context = {
+        "request": request,
+        "usuario": usuario
+    }
+    
+    return templates.TemplateResponse("perfil.html", context)
 
 """
 uvicorn main:app --reload

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - HelloMovie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { brand: '#e50914', dark: '#121212', surface: '#1a1a1a' } } }
+        }
+    </script>
+</head>
+<body class="bg-dark text-gray-100 font-sans antialiased min-h-screen flex flex-col">
+
+    <header class="bg-surface border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-extrabold text-brand tracking-wide hover:text-red-500">HelloMovie</a>
+            <a href="/" class="text-gray-400 hover:text-white transition-colors">&larr; Voltar para Home</a>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-3xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12">
+        
+        <div class="bg-surface border border-gray-800 rounded-2xl shadow-2xl overflow-hidden">
+            
+            <div class="h-32 bg-gradient-to-r from-brand/20 to-dark relative">
+                <div class="absolute -bottom-10 left-8 w-24 h-24 rounded-full bg-brand border-4 border-surface text-white flex items-center justify-center text-4xl font-bold shadow-lg">
+                    {{ usuario.nome_usuario[0]|upper }}
+                </div>
+            </div>
+
+            <div class="pt-14 pb-8 px-8">
+                <h1 class="text-3xl font-extrabold text-white">{{ usuario.nome_usuario }}</h1>
+                <p class="text-gray-400 mt-1">{{ usuario.email }}</p>
+                
+                <hr class="border-gray-800 my-8">
+                
+                <h2 class="text-xl font-bold text-white mb-4">Estatísticas da Conta</h2>
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="bg-dark border border-gray-800 rounded-lg p-4 text-center">
+                        <span class="block text-3xl font-bold text-brand">0</span>
+                        <span class="text-sm text-gray-400">Filmes na Lista</span>
+                    </div>
+                    <div class="bg-dark border border-gray-800 rounded-lg p-4 text-center">
+                        <span class="block text-3xl font-bold text-brand">0</span>
+                        <span class="text-sm text-gray-400">Avaliações</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-4 border-t border-gray-800">
+                    <a href="/logout" class="flex items-center gap-2 bg-red-600/10 hover:bg-red-600/20 text-red-500 border border-red-600/50 hover:border-red-500 font-bold py-2 px-6 rounded-lg transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        Sair da Conta
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-surface border-t border-gray-800 py-6 text-center text-gray-500 text-sm">
+        &copy; 2026 HelloMovie.
+    </footer>
+
+</body>
+</html>
