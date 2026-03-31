@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar - HelloMovie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { brand: '#e50914', dark: '#121212', surface: '#1a1a1a' } } }
+        }
+    </script>
+    <style>
+        .scrolling-track { display: flex; gap: 1rem; width: calc(200% + 2rem); }
+        @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes scrollRight { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+        .animate-scroll-left { animation: scrollLeft 60s linear infinite; }
+        .animate-scroll-right { animation: scrollRight 60s linear infinite; }
+        .poster-tile { flex: none; width: 10rem; aspect-ratio: 2/3; border-radius: 0.5rem; object-fit: cover; background-color: #2a2a2a; }
+    </style>
+</head>
+<body class="bg-dark text-gray-100 font-sans antialiased min-h-screen relative overflow-hidden">
+    
+    <div class="fixed inset-0 z-0 overflow-hidden opacity-60"> 
+        <div class="flex flex-col gap-4 rotate-[-10deg] scale-125 origin-center mt-[-10vh]">
+            {% set fileira1 = filmes[5:15] %}
+            <div class="scrolling-container animate-scroll-left"><div class="scrolling-track">
+                    {% for filme in fileira1 + fileira1 %}<img src="https://image.tmdb.org/t/p/w300{{ filme.poster_path }}" class="poster-tile shadow-lg">{% endfor %}
+            </div></div>
+            {% set fileira2 = filmes[0:10] %}
+            <div class="scrolling-container animate-scroll-right"><div class="scrolling-track">
+                    {% for filme in fileira2 + fileira2 %}<img src="https://image.tmdb.org/t/p/w300{{ filme.poster_path }}" class="poster-tile shadow-lg">{% endfor %}
+            </div></div>
+            {% set fileira3 = filmes[10:20] %}
+            <div class="scrolling-container animate-scroll-left"><div class="scrolling-track">
+                    {% for filme in fileira3 + fileira3 %}<img src="https://image.tmdb.org/t/p/w300{{ filme.poster_path }}" class="poster-tile shadow-lg">{% endfor %}
+            </div></div>
+            {% set fileira4 = filmes[0:20:2] %}
+            <div class="scrolling-container animate-scroll-right"><div class="scrolling-track">
+                    {% for filme in fileira4 + fileira4 %}<img src="https://image.tmdb.org/t/p/w300{{ filme.poster_path }}" class="poster-tile shadow-lg">{% endfor %}
+            </div></div>
+            {% set fileira5 = filmes[::-1][:10] %}
+            <div class="scrolling-container animate-scroll-left"><div class="scrolling-track">
+                    {% for filme in fileira5 + fileira5 %}<img src="https://image.tmdb.org/t/p/w300{{ filme.poster_path }}" class="poster-tile shadow-lg">{% endfor %}
+            </div></div>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-b from-dark via-dark/40 to-dark"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-dark/80 via-transparent to-dark/80"></div>
+    </div>
+
+    <div class="absolute top-6 left-6 sm:top-8 sm:left-8 z-20">
+        <a href="/" class="flex items-center gap-2 text-gray-400 hover:text-white font-medium transition-colors bg-surface/60 px-4 py-2 rounded-full backdrop-blur-md border border-gray-800 shadow-lg">
+            &larr; Voltar
+        </a>
+    </div>
+
+    <div class="relative z-10 flex min-h-screen flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+            <div class="bg-surface/80 backdrop-blur-sm py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-gray-800">
+                
+                <div class="mb-8">
+                    <h2 class="text-center text-3xl font-extrabold text-white">
+                        Entrar no <a href="/" class="text-brand transition-all duration-300 hover:brightness-125 inline-block">HelloMovie</a>
+                    </h2>
+                    <p class="mt-2 text-center text-sm text-gray-400">
+                        Ainda não tem conta? <a href="/cadastro" class="font-medium text-brand hover:text-red-500">Cadastre-se aqui</a>
+                    </p>
+                </div>
+                
+                <form class="space-y-6" action="/login" method="POST">
+                    
+                    {% if erro %}
+                    <div class="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded text-sm text-center">
+                        {{ erro }}
+                    </div>
+                    {% endif %}
+
+                    <div>
+                        <label for="nome_ou_email" class="block text-sm font-medium text-gray-300">Usuário ou Email</label>
+                        <div class="mt-1">
+                            <input id="nome_ou_email" name="nome_ou_email" type="text" required class="appearance-none block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm placeholder-gray-400 bg-gray-800 text-white focus:outline-none focus:ring-brand focus:border-brand sm:text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="senha" class="block text-sm font-medium text-gray-300">Senha</label>
+                        <div class="mt-1">
+                            <input id="senha" name="senha" type="password" required class="appearance-none block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm placeholder-gray-400 bg-gray-800 text-white focus:outline-none focus:ring-brand focus:border-brand sm:text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand focus:ring-offset-gray-900 transition-colors">
+                            Entrar
+                        </button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>

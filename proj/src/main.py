@@ -1,9 +1,9 @@
-from fastapi import FastAPI, Request, Form, HTTPException
+from fastapi import FastAPI, Request, Form, HTTPException, Response, Cookie
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 from passlib.context import CryptContext
-from sqlmodel import Session, select
+from sqlmodel import Session, select, or_
 from src.models import Usuario
 from src.db import engine, criar_banco_e_tabelas
 from src.services.tmdb import buscar_filmes, buscar_detalhes_filme, buscar_lancamentos, buscar_tendencias
@@ -75,12 +75,33 @@ def detalhes_filme(request: Request, filme_id: int):
     return templates.TemplateResponse("filmeDetalhes.html", context)
 
 @app.get("/login")
-def login():
-    pass
+def paginaLogin(request: Request):
+    filmes_fundo = buscar_tendencias()
 
+    context = {
+        "request": request,
+        "filmes": filmes_fundo
+    }
+
+    return templates.TemplateResponse("login.html", context)
+    
 @app.post("/login")
-def login2():
-    pass
+def logar(request: Request, nome_ou_email: str = Form(...), senha: str = Form(...)):
+    
+    with Session(engine) as session:
+
+        verificar_nome_ou_email = select(Usuario).where(
+            or_(Usuario.nome_usuario == nome_ou_email, Usuario.email == nome_ou_email))
+        
+        usuario = session.exec(verificar_nome_ou_email).first()
+        
+        if not usuario or not pwd_context.verify(senha, usuario.senha):
+            filmes_fundo = buscar_tendencias()
+            context = {"request": request, "erro": "Usuário ou senha incorretos!", "filmes": filmes_fundo}
+
+            return templates.TemplateResponse("login.html", context)
+        
+        return RedirectResponse(url="/home", status_code=303)
 
 @app.get("/cadastro")
 def paginaCadastro(request: Request):
@@ -104,10 +125,12 @@ def cadastrar(request: Request, nome: str = Form(...), email: str = Form(...), s
         filmes_fundo = buscar_tendencias()
 
         if usuario_email:
-            return templates.TemplateResponse("cadastro.html", {"request": request, "erro": "Esse email já está em uso!", "filmes": filmes_fundo})
+            context = {"request": request, "erro": "Esse email já está em uso!", "filmes": filmes_fundo}
+            return templates.TemplateResponse("cadastro.html", context)
         
         if usuario_nome:
-            return templates.TemplateResponse("cadastro.html", {"request": request, "erro": "Esse nome de usuário já está em uso!",  "filmes": filmes_fundo})
+            context2 = {"request": request, "erro": "Esse nome de usuário já está em uso!",  "filmes": filmes_fundo}
+            return templates.TemplateResponse("cadastro.html", context2)
         
         senha_hash = pwd_context.hash(senha)
         
