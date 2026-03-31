@@ -1,7 +1,11 @@
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from src.db import criar_banco_e_tabelas
+from fastapi.responses import RedirectResponse
+from passlib.context import CryptContext
+from sqlmodel import Session, select
+from src.models import Usuario
+from src.db import engine, criar_banco_e_tabelas
 from src.services.tmdb import buscar_filmes, buscar_detalhes_filme, buscar_lancamentos, buscar_tendencias
 from contextlib import asynccontextmanager
 
@@ -25,6 +29,8 @@ app = FastAPI(
 
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
 templates = Jinja2Templates(directory="src/templates")
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @app.get("/")
 def helloMovie(request: Request):
@@ -76,7 +82,40 @@ def login():
 def login2():
     pass
 
+@app.get("/cadastro")
+def paginaCadastro(request: Request):
 
+    filmes_fundo = buscar_tendencias()
+
+    context = {
+        "request": request,
+        "filmes": filmes_fundo
+    }
+
+    return templates.TemplateResponse("cadastro.html", context)
+
+@app.post("/cadastro")
+def cadastrar(request: Request, nome: str = Form(...), email: str = Form(...), senha: str = Form(...)):
+
+    with Session(engine) as session:
+        usuario_nome = session.exec(select(Usuario).where(Usuario.nome_usuario == nome)).first()
+        usuario_email = session.exec(select(Usuario).where(Usuario.email == email)).first()
+        
+        filmes_fundo = buscar_tendencias()
+
+        if usuario_email:
+            return templates.TemplateResponse("cadastro.html", {"request": request, "erro": "Esse email já está em uso!", "filmes": filmes_fundo})
+        
+        if usuario_nome:
+            return templates.TemplateResponse("cadastro.html", {"request": request, "erro": "Esse nome de usuário já está em uso!",  "filmes": filmes_fundo})
+        
+        senha_hash = pwd_context.hash(senha)
+        
+        novo_usuario = Usuario(nome_usuario=nome, email=email, senha=senha_hash)
+        session.add(novo_usuario)
+        session.commit()
+        
+        return RedirectResponse(url="/login", status_code=303)
 
 """
 uvicorn main:app --reload

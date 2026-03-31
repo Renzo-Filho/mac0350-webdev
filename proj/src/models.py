@@ -4,8 +4,9 @@ from datetime import datetime
 
 class Usuario(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    nome: str
+    nome_usuario: str = Field(unique=True, index=True)
     email: str = Field(unique=True, index=True)
+    senha: str
 
 class Filme(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
