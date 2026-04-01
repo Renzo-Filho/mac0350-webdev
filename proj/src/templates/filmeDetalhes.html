@@ -87,7 +87,49 @@
                     {% endfor %}
                 </div>
             </div>
+        </div>
+        </div></div> 
+        <div class="mt-16 border-t border-gray-800 pt-10">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+                Avaliações da Comunidade
+            </h2>
 
+            {% if avaliacoes %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {% for avaliacao, autor in avaliacoes %}
+                        <div class="bg-surface border border-gray-800 rounded-xl p-6 shadow-lg relative overflow-hidden group">
+                            
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                            
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 text-brand flex items-center justify-center font-bold shadow-lg">
+                                        {{ autor.nome_usuario[0]|upper }}
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-bold">{{ autor.nome_usuario }}</p>
+                                        <p class="text-xs text-gray-500 font-medium">{{ avaliacao.status }}</p>
+                                    </div>
+                                </div>
+                                
+                                {% if avaliacao.nota %}
+                                    <div class="bg-black/50 border border-gray-700 px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-inner">
+                                        <span class="text-yellow-500 text-sm">⭐</span>
+                                        <span class="text-white font-bold">{{ avaliacao.nota }}<span class="text-gray-500 text-xs">/10</span></span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <p class="text-gray-300 text-sm italic leading-relaxed">"{{ avaliacao.comentario }}"</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="bg-surface border border-gray-800 rounded-xl p-8 text-center shadow-inner">
+                    <p class="text-gray-400">Ainda não há avaliações para este filme. Que tal ser o primeiro a registrar sua opinião?</p>
+                </div>
+            {% endif %}
         </div>
     </main>
     <div id="modal-registro" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex justify-center items-center px-4 transition-all">
@@ -109,7 +151,6 @@
                         <option value="Quero ver">Quero ver</option>
                         <option value="Assistindo">Assistindo</option>
                         <option value="Já vi">Já vi</option>
-                        <option value="Favorito">Favorito ❤️</option>
                     </select>
                 </div>
 
@@ -149,7 +190,6 @@
                         <option value="Quero ver" {% if relacao.status == 'Quero ver' %}selected{% endif %}>Quero ver</option>
                         <option value="Assistindo" {% if relacao.status == 'Assistindo' %}selected{% endif %}>Assistindo</option>
                         <option value="Já vi" {% if relacao.status == 'Já vi' %}selected{% endif %}>Já vi</option>
-                        <option value="Favorito" {% if relacao.status == 'Favorito' %}selected{% endif %}>Favorito ❤️</option>
                     </select>
                 </div>
 
