@@ -32,10 +32,15 @@
                 {% endif %}
                 
                 {% if usuario %}
-                    {% if filme_esta_na_lista %}
-                        <button class="mt-6 w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg border border-green-500 cursor-default">
-                            ✓ Adicionado na Lista
-                        </button>
+                    {% if relacao %}
+                        <div class="mt-6 flex gap-2">
+                            <button class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg border border-green-500 cursor-default">
+                                ✓ Adicionado
+                            </button>
+                            <button onclick="document.getElementById('modal-editar').classList.remove('hidden')" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg border border-gray-700 transition-colors" title="Editar Avaliação">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                            </button>
+                        </div>
                     {% else %}
                         <button 
                             id="btn-adicionar"
@@ -44,11 +49,8 @@
                             Adicionar à Minha Lista
                         </button>
                     {% endif %}
-
                 {% else %}
-                    <a 
-                        href="/login" 
-                        class="mt-6 block text-center w-full bg-brand hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                    <a href="/login" class="mt-6 block text-center w-full bg-brand hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105">
                         Adicionar à Minha Lista
                     </a>
                 {% endif %}
@@ -89,7 +91,6 @@
         </div>
     </main>
     <div id="modal-registro" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex justify-center items-center px-4 transition-all">
-        
         <div id="modal-content" class="bg-surface border border-gray-800 rounded-xl p-6 shadow-2xl w-full max-w-lg relative">
             
             <button onclick="document.getElementById('modal-registro').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
@@ -108,6 +109,7 @@
                         <option value="Quero ver">Quero ver</option>
                         <option value="Assistindo">Assistindo</option>
                         <option value="Já vi">Já vi</option>
+                        <option value="Favorito">Favorito ❤️</option>
                     </select>
                 </div>
 
@@ -127,5 +129,55 @@
             </form>
         </div>
     </div>
+    {% if relacao %}
+    <div id="modal-editar" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex justify-center items-center px-4 transition-all">
+        <div id="modal-content-edit" class="bg-surface border border-gray-800 rounded-xl p-6 shadow-2xl w-full max-w-lg relative">
+            
+            <button onclick="document.getElementById('modal-editar').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <form hx-put="/minhaLista/editar/{{ filme.id }}" hx-target="#modal-content-edit" hx-swap="outerHTML">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-gray-800 pb-3">
+                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    Editar Avaliação
+                </h4>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Status</label>
+                    <select name="status" class="w-full bg-dark border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors">
+                        <option value="Quero ver" {% if relacao.status == 'Quero ver' %}selected{% endif %}>Quero ver</option>
+                        <option value="Assistindo" {% if relacao.status == 'Assistindo' %}selected{% endif %}>Assistindo</option>
+                        <option value="Já vi" {% if relacao.status == 'Já vi' %}selected{% endif %}>Já vi</option>
+                        <option value="Favorito" {% if relacao.status == 'Favorito' %}selected{% endif %}>Favorito ❤️</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Sua Nota (1 a 10)</label>
+                    <input type="number" name="nota" min="1" max="10" value="{{ relacao.nota if relacao.nota else '' }}" class="w-full bg-dark border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors" placeholder="Ex: 8">
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Análise / Comentários</label>
+                    <textarea name="comentario" rows="3" class="w-full bg-dark border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors resize-none placeholder-gray-600">{{ relacao.comentario if relacao.comentario else '' }}</textarea>
+                </div>
+
+                <div class="flex gap-3">
+                    <button type="button" 
+                            hx-delete="/minhaLista/remover/{{ filme.id }}" 
+                            hx-confirm="Tem certeza que deseja remover este filme da sua lista?"
+                            class="w-1/3 bg-gray-800 hover:bg-red-900/40 text-red-500 border border-red-500/30 hover:border-red-500 font-bold py-3 px-4 rounded-lg transition-colors flex justify-center items-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </button>
+                    
+                    <button type="submit" class="w-2/3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                        Salvar Alterações
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
 </body>
 </html>

@@ -69,25 +69,22 @@ def buscar(request: Request, query: str = ""):
 @app.get("/filme/{filme_id}")
 def detalhesFilme(request: Request, filme_id: int, usuario_id: Optional[str] = Cookie(default=None)):
     usuario = None
-    filme_esta_na_lista = False
+    relacao_usuario_filme = None
     
     if usuario_id:
         with Session(engine) as session:
             usuario = session.get(Usuario, int(usuario_id))
+
             if usuario:
                 filme_db = session.exec(select(Filme).where(Filme.tmdb_id == filme_id)).first()
-                
+
                 if filme_db:
-                    consulta = session.exec(select(ListaUsuario).where(
+                    relacao_usuario_filme = session.exec(select(ListaUsuario).where(
                         ListaUsuario.usuario_id == usuario.id,
                         ListaUsuario.filme_id == filme_db.id
                     )).first()
-                    
-                    if consulta:
-                        filme_esta_na_lista = True
 
     filme = buscar_detalhes_filme(filme_id)
-
     if not filme:
         raise HTTPException(status_code=404, detail="Filme não encontrado")
     
@@ -95,7 +92,7 @@ def detalhesFilme(request: Request, filme_id: int, usuario_id: Optional[str] = C
         "request": request,
         "filme": filme,
         "usuario": usuario,
-        "filme_esta_na_lista": filme_esta_na_lista 
+        "relacao": relacao_usuario_filme
     }
 
     return templates.TemplateResponse("filmeDetalhes.html", context)
@@ -300,8 +297,66 @@ def adicionarLista(request: Request, tmdb_id: int, status: str = Form(...), nota
                 ✓ Adicionado na Lista
             </button>""")
 
+@app.put("/minhaLista/editar/{tmdb_id}")
+def editarLista(request: Request, tmdb_id: int, status: str = Form(...), nota: Optional[int] = Form(None), 
+                comentario: Optional[str] = Form(None), usuario_id: Optional[str] = Cookie(default=None)):
+    
+    if not usuario_id:
+        response = HTMLResponse("")
+        response.headers["HX-Redirect"] = "/login"
+        return response
+        
+    with Session(engine) as session:
+        usuario = session.get(Usuario, int(usuario_id))
+        filme_db = session.exec(select(Filme).where(Filme.tmdb_id == tmdb_id)).first()
+        
+        if usuario and filme_db:
+            relacao_usuario_filme = session.exec(select(ListaUsuario).where(
+                ListaUsuario.usuario_id == usuario.id, 
+                ListaUsuario.filme_id == filme_db.id
+            )).first()
+            
+            if relacao_usuario_filme:
 
+                relacao_usuario_filme.status = status
+                relacao_usuario_filme.nota = nota
+                relacao_usuario_filme.comentario = comentario
 
+                session.add(relacao_usuario_filme)
+                session.commit()
+                
+                return HTMLResponse("""
+                    <div id="modal-content-edit" class="bg-surface border border-gray-800 rounded-xl p-8 shadow-2xl w-full max-w-lg relative text-center">
+                        <svg class="w-16 h-16 text-blue-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <h4 class="text-2xl text-white font-bold mb-2">Alterações Salvas!</h4>
+                        <p class="text-gray-400 mb-6">A sua avaliação foi atualizada.</p>
+                        <button onclick="window.location.reload()" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-colors border border-gray-700">
+                            Fechar
+                        </button>
+                    </div>""")
+
+@app.delete("/minhaLista/remover/{tmdb_id}")
+def removerLista(request: Request, tmdb_id: int, usuario_id: Optional[str] = Cookie(default=None)):
+    if not usuario_id:
+        return Response(status_code=401)
+        
+    with Session(engine) as session:
+        usuario = session.get(Usuario, int(usuario_id))
+        filme_db = session.exec(select(Filme).where(Filme.tmdb_id == tmdb_id)).first()
+        
+        if usuario and filme_db:
+            relacao_usuario_filme = session.exec(select(ListaUsuario).where(
+                ListaUsuario.usuario_id == usuario.id, 
+                ListaUsuario.filme_id == filme_db.id
+            )).first()
+            
+            if relacao_usuario_filme:
+                session.delete(relacao_usuario_filme)
+                session.commit()
+                
+                response = HTMLResponse("")
+                response.headers["HX-Refresh"] = "true"
+                return response
 
 """
 uvicorn main:app --reload
