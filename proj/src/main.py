@@ -298,7 +298,8 @@ def adicionarLista(request: Request, tmdb_id: int, status: str = Form(...), nota
                
         return HTMLResponse("""
             <div id="modal-content" class="bg-surface border border-gray-800 rounded-xl p-8 shadow-2xl w-full max-w-lg relative text-center">
-                <button onclick="document.getElementById('modal-registro').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                
+                <button onclick="window.location.reload()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
                 
@@ -306,7 +307,7 @@ def adicionarLista(request: Request, tmdb_id: int, status: str = Form(...), nota
                 <h4 class="text-2xl text-white font-bold mb-2">Registro Salvo!</h4>
                 <p class="text-gray-400 mb-6">O filme foi adicionado à sua lista com sucesso.</p>
                 
-                <button onclick="document.getElementById('modal-registro').classList.add('hidden')" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-colors border border-gray-700">
+                <button onclick="window.location.reload()" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-colors border border-gray-700">
                     Fechar Janela
                 </button>
             </div>
