@@ -2,3 +2,4 @@ proj/plan.md
 proj/.env
 **/__pycache__/
 .venv
+*.db
