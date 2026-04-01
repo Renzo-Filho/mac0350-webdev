@@ -20,5 +20,6 @@ class ListaUsuario(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     usuario_id: int = Field(foreign_key="usuario.id")
     filme_id: int = Field(foreign_key="filme.id")
-    status: str = Field(default="Planejado")
-    nota: Optional[int] = Field(default=None, ge=0, le=10) 
+    status: str = Field(default="Quero ver") 
+    nota: Optional[int] = Field(default=None, ge=0, le=10)
+    comentario: Optional[str] = None

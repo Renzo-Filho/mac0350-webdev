@@ -67,7 +67,25 @@ def buscar(request: Request, query: str = ""):
     return templates.TemplateResponse("resultadosBusca.html", context)
 
 @app.get("/filme/{filme_id}")
-def detalhesFilme(request: Request, filme_id: int):
+def detalhesFilme(request: Request, filme_id: int, usuario_id: Optional[str] = Cookie(default=None)):
+    usuario = None
+    filme_esta_na_lista = False
+    
+    if usuario_id:
+        with Session(engine) as session:
+            usuario = session.get(Usuario, int(usuario_id))
+            if usuario:
+                filme_db = session.exec(select(Filme).where(Filme.tmdb_id == filme_id)).first()
+                
+                if filme_db:
+                    consulta = session.exec(select(ListaUsuario).where(
+                        ListaUsuario.usuario_id == usuario.id,
+                        ListaUsuario.filme_id == filme_db.id
+                    )).first()
+                    
+                    if consulta:
+                        filme_esta_na_lista = True
+
     filme = buscar_detalhes_filme(filme_id)
 
     if not filme:
@@ -75,7 +93,9 @@ def detalhesFilme(request: Request, filme_id: int):
     
     context = {
         "request": request,
-        "filme": filme
+        "filme": filme,
+        "usuario": usuario,
+        "filme_esta_na_lista": filme_esta_na_lista 
     }
 
     return templates.TemplateResponse("filmeDetalhes.html", context)
@@ -175,7 +195,7 @@ def paginaPerfil(request: Request, usuario_id: Optional[str] = Cookie(default=No
     return templates.TemplateResponse("perfil.html", context)
 
 @app.get("/minhaLista")
-def paginaMinhaLista(request: Request, usuario_id: Optional[str] = Cookie(default=None)):
+def paginaMinhaLista(request: Request, status: Optional[str] = None, usuario_id: Optional[str] = Cookie(default=None)):
     if not usuario_id:
         return RedirectResponse(url="/login", status_code=303)
     
@@ -184,19 +204,27 @@ def paginaMinhaLista(request: Request, usuario_id: Optional[str] = Cookie(defaul
         
         if not usuario:
             return RedirectResponse(url="/login", status_code=303)
-
-        meus_filmes = session.exec(select(Filme).join(ListaUsuario).where(ListaUsuario.usuario_id == usuario.id)).all()
+        
+        query = select(Filme, ListaUsuario).join(ListaUsuario).where(ListaUsuario.usuario_id == usuario.id)
+        
+        if status and status != "Todos":
+            query = query.where(ListaUsuario.status == status)
+            
+        meus_filmes = session.exec(query).all() 
         
     context = {
         "request": request,
         "usuario": usuario,
-        "filmes": meus_filmes
+        "filmes": meus_filmes,
+        "status_atual": status or "Todos"
     }
 
     return templates.TemplateResponse("minhaLista.html", context)
-    
+
 @app.post("/minhaLista/adicionar/{tmdb_id}")
-def adicionarLista(request: Request, tmdb_id: int, usuario_id: Optional[str] = Cookie(default=None)):
+def adicionarLista(request: Request, tmdb_id: int, status: str = Form(...), nota: Optional[int] = Form(None), 
+                   comentario: Optional[str] = Form(None), usuario_id: Optional[str] = Cookie(default=None)):
+    
     if not usuario_id:
         response = HTMLResponse("")
         response.headers["HX-Redirect"] = "/login"
@@ -210,18 +238,14 @@ def adicionarLista(request: Request, tmdb_id: int, usuario_id: Optional[str] = C
             return response
             
         existe_filme_db = session.exec(select(Filme).where(Filme.tmdb_id == tmdb_id)).first()
-        
         if not existe_filme_db:
             dados_tmdb = buscar_detalhes_filme(tmdb_id)
-
             if not dados_tmdb:
                 return HTMLResponse("<span class='text-red-500'>Erro ao buscar filme!</span>")
             
             existe_filme_db = Filme(
-                tmdb_id=tmdb_id,
-                titulo=dados_tmdb.get("title", "Sem Título"),
-                sinopse=dados_tmdb.get("overview", ""),
-                poster_url=dados_tmdb.get("poster_path", ""),
+                tmdb_id=tmdb_id, titulo=dados_tmdb.get("title", "Sem Título"),
+                sinopse=dados_tmdb.get("overview", ""), poster_url=dados_tmdb.get("poster_path", ""),
                 data_lancamento=dados_tmdb.get("release_date", "")
             )
             session.add(existe_filme_db)
@@ -229,25 +253,54 @@ def adicionarLista(request: Request, tmdb_id: int, usuario_id: Optional[str] = C
             session.refresh(existe_filme_db)
         
         filme_esta_na_lista = session.exec(select(ListaUsuario).where(
-            ListaUsuario.usuario_id == usuario.id,
+            ListaUsuario.usuario_id == usuario.id, 
             ListaUsuario.filme_id == existe_filme_db.id
         )).first()
         
         if filme_esta_na_lista:
             return HTMLResponse("""
-                <button class="mt-6 w-full bg-gray-700 text-gray-400 font-bold py-3 px-4 rounded-lg cursor-not-allowed border border-gray-600">
-                    Já está na sua Lista
-                </button>
-            """)
+                <div id="modal-content" class="bg-surface border border-gray-800 rounded-xl p-8 shadow-2xl w-full max-w-lg relative text-center">
+                    <button onclick="document.getElementById('modal-registro').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                    <svg class="w-16 h-16 text-yellow-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <h4 class="text-2xl text-white font-bold mb-2">Já Registrado</h4>
+                    <p class="text-gray-400 mb-6">Você já possui este filme na sua lista pessoal.</p>
+                    <button onclick="document.getElementById('modal-registro').classList.add('hidden')" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-colors border border-gray-700">
+                        Fechar Janela
+                    </button>
+                </div>""")
             
-        novo_filme = ListaUsuario(usuario_id=usuario.id, filme_id=existe_filme_db.id)
+        novo_filme = ListaUsuario(
+            usuario_id=usuario.id, 
+            filme_id=existe_filme_db.id,
+            status=status,         
+            nota=nota,             
+            comentario=comentario
+        )
         session.add(novo_filme)
         session.commit()
-        
+               
         return HTMLResponse("""
-            <button class="mt-6 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-colors border border-green-500">
-                ✓ Adicionado com Sucesso!
+            <div id="modal-content" class="bg-surface border border-gray-800 rounded-xl p-8 shadow-2xl w-full max-w-lg relative text-center">
+                <button onclick="document.getElementById('modal-registro').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                
+                <svg class="w-16 h-16 text-green-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <h4 class="text-2xl text-white font-bold mb-2">Registro Salvo!</h4>
+                <p class="text-gray-400 mb-6">O filme foi adicionado à sua lista com sucesso.</p>
+                
+                <button onclick="document.getElementById('modal-registro').classList.add('hidden')" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-colors border border-gray-700">
+                    Fechar Janela
+                </button>
+            </div>
+
+            <button id="btn-adicionar" hx-swap-oob="true" class="mt-6 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-colors border border-green-500 cursor-default">
+                ✓ Adicionado na Lista
             </button>""")
+
+
 
 
 """

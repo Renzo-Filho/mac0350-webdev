@@ -31,12 +31,27 @@
                     <div class="w-full aspect-[2/3] bg-gray-800 rounded-lg flex items-center justify-center">Sem Pôster</div>
                 {% endif %}
                 
-                <button 
-                    hx-post="/minhaLista/adicionar/{{ filme.id }}" 
-                    hx-swap="outerHTML" 
-                    class="mt-6 w-full bg-brand hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-                    Adicionar à Minha Lista
-                </button>
+                {% if usuario %}
+                    {% if filme_esta_na_lista %}
+                        <button class="mt-6 w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg border border-green-500 cursor-default">
+                            ✓ Adicionado na Lista
+                        </button>
+                    {% else %}
+                        <button 
+                            id="btn-adicionar"
+                            onclick="document.getElementById('modal-registro').classList.remove('hidden')" 
+                            class="mt-6 w-full bg-brand hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                            Adicionar à Minha Lista
+                        </button>
+                    {% endif %}
+
+                {% else %}
+                    <a 
+                        href="/login" 
+                        class="mt-6 block text-center w-full bg-brand hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                        Adicionar à Minha Lista
+                    </a>
+                {% endif %}
             </div>
 
             <div class="md:w-2/3 lg:w-3/4">
@@ -73,5 +88,44 @@
 
         </div>
     </main>
+    <div id="modal-registro" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex justify-center items-center px-4 transition-all">
+        
+        <div id="modal-content" class="bg-surface border border-gray-800 rounded-xl p-6 shadow-2xl w-full max-w-lg relative">
+            
+            <button onclick="document.getElementById('modal-registro').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <form hx-post="/minhaLista/adicionar/{{ filme.id }}" hx-target="#modal-content" hx-swap="outerHTML">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-gray-800 pb-3">
+                    <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    Registrar Filme
+                </h4>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Status</label>
+                    <select name="status" class="w-full bg-dark border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors">
+                        <option value="Quero ver">Quero ver</option>
+                        <option value="Assistindo">Assistindo</option>
+                        <option value="Já vi">Já vi</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Sua Nota (1 a 10)</label>
+                    <input type="number" name="nota" min="1" max="10" class="w-full bg-dark border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors" placeholder="Ex: 8">
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Análise / Comentários</label>
+                    <textarea name="comentario" rows="3" class="w-full bg-dark border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors resize-none placeholder-gray-600" placeholder="Escreva o que achou do filme..."></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-brand hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                    Salvar na Lista
+                </button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
