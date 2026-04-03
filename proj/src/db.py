@@ -1,5 +1,4 @@
 from sqlmodel import SQLModel, create_engine, Session
-from src.models import Usuario, Filme, ListaUsuario
 
 sqlite_file_name = "hellomovie.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"

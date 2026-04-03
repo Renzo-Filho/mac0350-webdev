@@ -24,7 +24,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="HelloMovie API",
     description="Backend para gerenciamento de catálogo pessoal de filmes.",
-    version="0.1.0",
+    version="1.0",
     lifespan=lifespan
 )
 
@@ -85,7 +85,6 @@ def detalhesFilme(request: Request, filme_id: int, usuario_id: Optional[str] = C
                     ListaUsuario.filme_id == filme_db.id
                 )).first()
             
-            # query de busca por todos os comentários
             query = select(ListaUsuario, Usuario).join(Usuario).where(
                 ListaUsuario.filme_id == filme_db.id,
                 ListaUsuario.comentario != None,
@@ -273,7 +272,7 @@ def adicionarLista(request: Request, tmdb_id: int, status: str = Form(...), nota
         )).first()
         
         if filme_esta_na_lista:
-            return HTMLResponse("""
+            janela_esta_na_lista =  HTMLResponse("""
                 <div id="modal-content" class="bg-surface border border-gray-800 rounded-xl p-8 shadow-2xl w-full max-w-lg relative text-center">
                     <button onclick="document.getElementById('modal-registro').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -286,6 +285,8 @@ def adicionarLista(request: Request, tmdb_id: int, status: str = Form(...), nota
                     </button>
                 </div>""")
             
+            return janela_esta_na_lista
+        
         novo_filme = ListaUsuario(
             usuario_id=usuario.id, 
             filme_id=existe_filme_db.id,
@@ -295,8 +296,8 @@ def adicionarLista(request: Request, tmdb_id: int, status: str = Form(...), nota
         )
         session.add(novo_filme)
         session.commit()
-               
-        return HTMLResponse("""
+
+        janela_add_na_lista = HTMLResponse("""
             <div id="modal-content" class="bg-surface border border-gray-800 rounded-xl p-8 shadow-2xl w-full max-w-lg relative text-center">
                 
                 <button onclick="window.location.reload()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
@@ -315,6 +316,8 @@ def adicionarLista(request: Request, tmdb_id: int, status: str = Form(...), nota
             <button id="btn-adicionar" hx-swap-oob="true" class="mt-6 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-colors border border-green-500 cursor-default">
                 ✓ Adicionado na Lista
             </button>""")
+               
+        return janela_add_na_lista
 
 @app.put("/minhaLista/editar/{tmdb_id}")
 def editarLista(request: Request, tmdb_id: int, status: str = Form(...), nota: Optional[int] = Form(None), 
@@ -344,7 +347,7 @@ def editarLista(request: Request, tmdb_id: int, status: str = Form(...), nota: O
                 session.add(relacao_usuario_filme)
                 session.commit()
                 
-                return HTMLResponse("""
+                janela_editar = HTMLResponse("""
                     <div id="modal-content-edit" class="bg-surface border border-gray-800 rounded-xl p-8 shadow-2xl w-full max-w-lg relative text-center">
                         <svg class="w-16 h-16 text-blue-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         <h4 class="text-2xl text-white font-bold mb-2">Alterações Salvas!</h4>
@@ -353,6 +356,8 @@ def editarLista(request: Request, tmdb_id: int, status: str = Form(...), nota: O
                             Fechar
                         </button>
                     </div>""")
+                
+                return janela_editar
 
 @app.delete("/minhaLista/remover/{tmdb_id}")
 def removerLista(request: Request, tmdb_id: int, usuario_id: Optional[str] = Cookie(default=None)):
@@ -376,10 +381,3 @@ def removerLista(request: Request, tmdb_id: int, usuario_id: Optional[str] = Coo
                 response = HTMLResponse("")
                 response.headers["HX-Refresh"] = "true"
                 return response
-
-"""
-uvicorn main:app --reload
-
-O Uvicorn é o "motor" que vai rodar o FastAPI.
-O --reload faz com que o servidor atualize sozinho toda vez que você salvar o arquivo (ótimo para desenvolver).
-"""
