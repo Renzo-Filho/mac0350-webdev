@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <title>Abas</title>
+    <style>
+        .aba-btn {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+        
+        .aba-btn.ativa {
+            background-color: #d0e8ff;
+            font-weight: bold;
+            border-color: #007bff;
+        }
+        
+        .conteudo-aba {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <button class="aba-btn {% if aba_atual == 'curtidas' %}ativa{% endif %}" 
+                hx-post="/mudar-aba" 
+                hx-vals='{"aba": "curtidas"}'
+                hx-target="#conteudo-principal"
+                hx-swap="innerHTML"
+                hx-trigger="click, atalho-teclado">
+            Curtidas
+        </button>
+        <button class="aba-btn {% if aba_atual == 'jupiter' %}ativa{% endif %}"
+                hx-post="/mudar-aba"
+                hx-vals='{"aba": "jupiter"}'
+                hx-target="#conteudo-principal"
+                hx-swap="innerHTML"
+                hx-trigger="click, atalho-teclado">
+            Júpiter
+        </button>
+        <button class="aba-btn {% if aba_atual == 'professor' %}ativa{% endif %}"
+                hx-post="/mudar-aba"
+                hx-vals='{"aba": "professor"}'
+                hx-target="#conteudo-principal"
+                hx-swap="innerHTML"
+                hx-trigger="click, atalho-teclado">
+            Professor
+        </button>
+    </nav>
+
+    <div id="conteudo-principal" class="conteudo-aba">
+        {% if aba_atual == 'curtidas' %}
+            {% include 'curtidas.html' %}
+        {% elif aba_atual == 'jupiter' %}
+            {% include 'jupiter.html' %}
+        {% elif aba_atual == 'professor' %}
+            {% include 'professor.html' %}
+        {% endif %}
+    </div>
+
+    <script>
+        function atualizarBotaoAtivo(botao) {
+            const botoes = document.querySelectorAll('nav .aba-btn');
+            botoes.forEach(btn => btn.classList.remove('ativa'));
+            botao.classList.add('ativa');
+        }
+
+        document.querySelectorAll('nav .aba-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                atualizarBotaoAtivo(this);
+            });
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.shiftKey && e.altKey && e.code === 'KeyP') {
+                e.preventDefault();
+                
+                const botoes = Array.from(document.querySelectorAll('nav .aba-btn'));
+                const currentIndex = botoes.findIndex(btn => btn.classList.contains('ativa'));
+                
+                if (currentIndex !== -1) {
+                    let nextIndex = (currentIndex + 1) % botoes.length;
+                    const proximoBotao = botoes[nextIndex];
+                    
+                    atualizarBotaoAtivo(proximoBotao);
+                    
+                    const evento = new CustomEvent('atalho-teclado');
+                    proximoBotao.dispatchEvent(evento);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

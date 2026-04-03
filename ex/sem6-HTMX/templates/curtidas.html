@@ -1,0 +1,21 @@
+<div>
+    <h2>Aba de Curtidas</h2>
+    <div>
+        <span>Total de curtidas: </span>
+        <span id="contador-curtidas">{{ curtidas }}</span>
+    </div>
+    <div style="margin-top: 20px;">
+        <button hx-post="/curtir" 
+                hx-target="#contador-curtidas"
+                hx-swap="innerHTML">
+            Curtir!
+        </button>
+        
+        <button hx-post="/resetar-curtidas"
+                hx-target="#contador-curtidas"
+                hx-swap="innerHTML"
+                hx-confirm="Deseja remover todas as curtidas?">
+            Remover curtidas
+        </button>
+    </div>
+</div>
