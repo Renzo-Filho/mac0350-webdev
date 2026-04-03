@@ -11,7 +11,7 @@
     --white: #ffffff;
     
     /* Espaçamentos e Fontes Base */
-    --font-base: 1rem; /* Equivalente a 16px no navegador padrão */
+    --font-base: 1rem; 
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
     --spacing-lg: 2rem;
@@ -91,7 +91,7 @@ body {
 .container {
     display: flex;
     flex: 1;
-    max-width: 90vw; /* Usando largura relativa ao viewport */
+    max-width: 90vw;
     width: 100%;
     margin: 4vh auto;
     padding: 0 2vw;
@@ -101,7 +101,7 @@ body {
 
 /* Menu Lateral */
 .sidebar {
-    width: 25%; /* Relativo ao container pai */
+    width: 25%; 
     min-width: 16rem;
     flex-shrink: 0;
 }
@@ -159,7 +159,7 @@ body {
 .main-content {
     flex: 1;
     display: flex;
-    justify-content: center; /* Centraliza o card de login na tela */
+    justify-content: center; 
     align-items: flex-start;
     margin-left: -40vh;
 }
@@ -217,7 +217,7 @@ body {
 .action-group {
     display: flex;
     justify-content: flex-start;
-    padding-left: 25%; /* Alinha com os inputs (mesma largura da label) */
+    padding-left: 25%; 
     margin-top: var(--spacing-lg);
 }
 
@@ -258,13 +258,13 @@ footer {
 @media (max-width: 1024px) {
     .container {
         flex-direction: column;
-        align-items: center; /* MUDANÇA: Centraliza o eixo no modo coluna */
+        align-items: center; 
         margin: 4vh auto;
         padding: 0 4vw;
     }
 
     .main-content {
-        width: 100%; /* Garante que a área de login use todo o espaço disponível */
+        width: 100%; 
         justify-content: center; 
         margin-left: auto;
     }
@@ -274,12 +274,11 @@ footer {
     }
     
     .login-card {
-        padding: 2rem 1.5rem; /* Ajuste leve para o card não ficar apertado */
-        width: 100%; /* Garante que o card ocupe o centro proporcionalmente */
-        max-width: 25rem; /* Limita o crescimento do card em tablets pequenos */
+        padding: 2rem 1.5rem;
+        width: 100%; 
+        max-width: 25rem; 
     }
 
-    /* ... o restante das configurações de inputs e botão que já estavam aqui ... */
     .input-group {
         flex-direction: column;
         align-items: stretch;

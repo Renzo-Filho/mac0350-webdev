@@ -126,7 +126,7 @@ body {
     width: 25vw;
     height: 25vw;
     object-fit: cover;
-    border-radius: 50%; /* Corrigido de 80% para 50% para um círculo perfeito */
+    border-radius: 50%; 
     border: 0.2rem solid var(--text-primary);
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
@@ -170,7 +170,7 @@ body {
 
 .bio-paragraph {
     text-align: justify;
-    white-space: pre-line; /* Respeita quebras de linha */
+    white-space: pre-line;
     line-height: 1.8;
     font-size: 1.1rem;
 }
@@ -196,8 +196,8 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    aspect-ratio: 1 / 1; /* A mágica para manter o card quadrado */
-    border-bottom: 4px solid transparent; /* Adicione isso para evitar "pulo" no layout */
+    aspect-ratio: 1 / 1; 
+    border-bottom: 4px solid transparent; 
     transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
 }
 
@@ -269,8 +269,8 @@ body {
     margin: 0 auto;
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 8px; /* Cantos um pouco mais retos, igual à imagem */
-    overflow: hidden; /* Mantém o formato arredondado impecável */
+    border-radius: 8px;
+    overflow: hidden; 
 }
 
 .students-scroll-list {
@@ -296,11 +296,11 @@ body {
 }
 
 .student-item {
-    padding: 1.2rem 1.5rem; /* Espaçamento mais generoso */
+    padding: 1.2rem 1.5rem;
     border-bottom: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    gap: 0.3rem; /* Distância entre o Nome e a Titulação */
+    gap: 0.3rem; 
     transition: background-color var(--transition);
 }
 
@@ -309,10 +309,9 @@ body {
 }
 
 .student-item:hover {
-    background-color: rgba(134, 117, 245, 0.05); /* Efeito muito sutil no hover */
+    background-color: rgba(134, 117, 245, 0.05); 
 }
 
-/* Linha de Cima: Nome e Ano */
 .student-header {
     display: flex;
     align-items: baseline;
@@ -328,10 +327,9 @@ body {
 .student-year {
     font-size: 0.85rem;
     color: var(--text-primary);
-    opacity: 0.5; /* Fica cinza sem estragar no light-mode */
+    opacity: 0.5; 
 }
 
-/* Linha de Baixo: Cargo e Local */
 .student-body {
     display: flex;
     align-items: center;
@@ -340,7 +338,7 @@ body {
 }
 
 .student-degree {
-    color: var(--accent-purple); /* Mantém sua identidade visual em vez de azul */
+    color: var(--accent-purple);
     font-weight: 500;
 }
 

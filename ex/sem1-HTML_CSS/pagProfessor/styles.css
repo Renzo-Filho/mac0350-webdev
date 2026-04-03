@@ -55,7 +55,7 @@
     }
 
     html {
-        font-size: 16px; /* Base 1rem = 16px */
+        font-size: 16px; 
         scroll-behavior: smooth;
     }
 
@@ -195,7 +195,6 @@
         opacity: 1;
     }
 
-    /* Responsive Desktop */
     @media (min-width: 768px) {
         body {
             flex-direction: row;
@@ -343,9 +342,9 @@
     p {
         margin-bottom: 1rem;
         text-align: justify;
-        hyphens: auto; /* Adiciona hifens automáticos para evitar buracos no texto */
-        -webkit-hyphens: auto; /* Suporte para navegadores baseados em WebKit (Safari) */
-        -ms-hyphens: auto; /* Suporte para versões antigas do Edge/IE */
+        hyphens: auto;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto; 
     }
 
     .text-muted { color: var(--text-muted); }
