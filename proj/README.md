@@ -51,6 +51,16 @@
 - [HTMX](https://htmx.org/) - Interações AJAX direto no HTML (hx-get, hx-post, hx-put, hx-delete).
 - [Tailwind CSS](https://tailwindcss.com/) - Estilização utilitária.
 
+## 🤖 Transparência sobre o Uso de IA
+
+Em conformidade com as diretrizes de transparência acadêmica, declaro que ferramentas de Inteligência Artificial (como Gemini) foram utilizadas como assistentes de aprendizado durante o desenvolvimento deste projeto. O uso dessas ferramentas foi limitado aos seguintes cenários:
+
+* **Dúvidas de Implementação:** Consultas gerais para esclarecer dúvidas de lógica estrutural e decisões de arquitetura do código.
+* **Ferramentas de Backend:** Auxílio para entender o funcionamento e a aplicação correta da biblioteca `passlib.context` no processo de hash e verificação de senhas.
+* **Estilização de Frontend:** Consultas rápidas como referência para localizar classes utilitárias específicas do **Tailwind CSS**, visando alcançar o design e o layout desejados.
+
+Todas as sugestões geradas pela IA foram minuciosamente lidas, testadas e adaptadas manualmente para garantir a compreensão total do que estava sendo feito e a integração correta ao código do projeto.
+
 ## 🚀 Como Rodar o Projeto Localmente
 
 ### 1. Pré-requisitos

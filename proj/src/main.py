@@ -6,7 +6,7 @@ from passlib.context import CryptContext
 from typing import Optional
 from sqlmodel import Session, select, or_
 from src.models import Usuario, Filme, ListaUsuario
-from src.db import engine, criar_banco_e_tabelas
+from src.db import engine, criar_banco_de_dados
 from src.services.tmdb import buscar_filmes, buscar_detalhes_filme, buscar_lancamentos, buscar_tendencias
 from contextlib import asynccontextmanager
 
@@ -14,7 +14,7 @@ from contextlib import asynccontextmanager
 async def lifespan(app: FastAPI):
     # antes do 'yield' roda na hora que o servidor LIGA
     print("Iniciando o servidor e verificando o banco de dados...")
-    criar_banco_e_tabelas()
+    criar_banco_de_dados()
     
     yield
     
